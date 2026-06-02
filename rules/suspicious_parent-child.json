@@ -13,10 +13,34 @@
             "mitre": "T1059.001",
             "severity": "medium"
         },
+                        {
+            "parent": "winword.exe",
+            "child": "python.exe",
+            "mitre": "T1059.006",
+            "severity": "high"
+        },
                 {
             "parent": "excel.exe",
             "child": "cmd.exe",
             "mitre": "T1059.003",
+            "severity": "medium"
+        },
+                        {
+            "parent": "excel.exe",
+            "child": "powershell.exe",
+            "mitre": "T1059.001",
+            "severity": "medium"
+        },
+                        {
+            "parent": "excel.exe",
+            "child": "python.exe",
+            "mitre": "T1059.006",
+            "severity": "high"
+        },
+                        {
+            "parent": "outlook.exe",
+            "child": "powershell.exe",
+            "mitre": "T1059.001",
             "severity": "medium"
         },
                 {
