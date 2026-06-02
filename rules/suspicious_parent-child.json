@@ -18,6 +18,12 @@
             "child": "cmd.exe",
             "mitre": "T1059.003",
             "severity": "medium"
+        },
+                {
+            "parent": "explorer.exe",
+            "child": "powershell.exe",
+            "mitre": "T1059.001",
+            "severity": "test"
         }
     ]
 }
