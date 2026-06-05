@@ -1,4 +1,4 @@
-# Windows detection lab
+# MonLog
 
 A lightweight cybersecurity logging project focused on Windows endpoint telemetry,
 sysmon logs, Python-based parsing, and MITRE ATT&CK mapping

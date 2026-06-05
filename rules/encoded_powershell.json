@@ -1,0 +1,11 @@
+{
+    "name": "encoded powershell execution",
+    "rules": [
+        {
+            "process": ["powershell.exe", "pwsh.exe"],
+            "indicators": ["-e", "-ec", "-enc", "-enco", "-encodedcommand"],
+            "mitre": "T1059.001",
+            "severity": "high"
+        }
+    ]
+}

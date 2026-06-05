@@ -6,6 +6,7 @@ from pathlib import Path
 LOG_PATH = Path("sample-logs/sysmon.evtx")
 RULE_PATH = Path("rules/suspicious_parent-child.json")
 MAX_RECORDS = 500
+SEPARATOR = 60
 
 # Command to export a log: 
 # wevtutil epl Microsoft-Windows-Sysmon/Operational "PATH\TO\FOLDER\FILE_NAME.evtx" /ow:true
@@ -26,7 +27,7 @@ def getEventData(eventXML):
 
 # Takes in the extracted data and outputs it in terminal
 def printAlert(rule, parent, child, timestamp, commandLine):
-    if parent == rule["parent"] and child == rule["child"]:
+    if parent in rule["parent"] and child == rule["child"]:
         print("[ALERT]")
         print(f"Timestamp: {timestamp}")
         print(f"Parent: {parent}")
@@ -34,7 +35,7 @@ def printAlert(rule, parent, child, timestamp, commandLine):
         print(f"Command Line: {commandLine}")
         print(f"MITRE: {rule['mitre']}")
         print(f"Severity: {rule['severity']}")
-        print("-" * 60)
+        print("-" * SEPARATOR)
 
 def main():
     # Open the json file and extract the rules specifically
@@ -43,7 +44,7 @@ def main():
         rules = rule_file["rules"]
 
         for rule in rules:
-            rule["parent"] = rule["parent"].lower()
+            rule["parent"] = [parent.lower() for parent in rule["parent"]]
             rule["child"] = rule["child"].lower()
 
         # Open the imported evtx log and start parsing
