@@ -12,10 +12,10 @@ SEPARATOR = 60
 # wevtutil epl Microsoft-Windows-Sysmon/Operational "PATH\TO\FOLDER\FILE_NAME.evtx" /ow:true
 
 # Takes in a raw Sysmon record, turns it into a tree, and extracts the useful info
-def getEventData(eventXML):
-    root = ET.fromstring(eventXML)
+def get_event_data(event_xml):
+    root = ET.fromstring(event_xml)
     ns = {"e": "http://schemas.microsoft.com/win/2004/08/events/event"}
-    eventID = root.find(".//e:EventID", ns).text
+    event_id = root.find(".//e:EventID", ns).text
     timestamp = root.find(".//e:TimeCreated", ns).attrib.get("SystemTime")
 
     # Create and fill a dictionary of Sysmon fields
@@ -23,10 +23,10 @@ def getEventData(eventXML):
     for item in root.findall(".//e:EventData/e:Data", ns):
         data[item.attrib.get("Name")] = item.text or ""
 
-    return eventID, timestamp, data
+    return event_id, timestamp, data
 
 # Takes in the extracted data and outputs it in terminal
-def printAlert(rule, parent, child, timestamp, commandLine):
+def print_alert(rule, parent, child, timestamp, commandLine):
     if parent in rule["parent"] and child == rule["child"]:
         print("[ALERT]")
         print(f"Timestamp: {timestamp}")
@@ -53,16 +53,16 @@ def main():
                 # For testing purposes, limited to first 500 logs, REMOVE LATER
                 if count > MAX_RECORDS:
                     break
-                event_id, timestamp, data = getEventData(record.xml())
+                event_id, timestamp, data = get_event_data(record.xml())
                 if event_id != "1":
                     continue
 
                 parent = Path(data.get("ParentImage", "")).name.lower()
                 child = Path(data.get("Image", "")).name.lower()
-                commandLine = data.get("CommandLine", "")
+                command_line = data.get("CommandLine", "")
 
                 for rule in rules:
-                    printAlert(rule, parent, child, timestamp, commandLine)
+                    print_alert(rule, parent, child, timestamp, command_line)
                 
 if __name__ == "__main__":
     main()
