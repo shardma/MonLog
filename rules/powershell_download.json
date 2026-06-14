@@ -1,0 +1,20 @@
+{
+    "name": "powershell remote content download",
+    "rules": [
+        {
+            "processes": ["powershell.exe", "pwsh.exe"],
+            "indicators": [
+                "invoke-webrequest",
+                "iwr",
+                "wget",
+                "curl",
+                "downloadstring",
+                "downloadfile",
+                "http://",
+                "https://"
+            ],
+            "mitre": "T1105",
+            "severity": "high"
+        }
+    ]
+}

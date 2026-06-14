@@ -1,11 +1,10 @@
 import json
 from Evtx.Evtx import Evtx
-from xml.etree import ElementTree as ET
 from pathlib import Path
 from helper import get_event_data
 
 LOG_PATH = Path("sample-logs/sysmon.evtx")
-RULE_PATH = Path("rules/encoded_powershell.json")
+RULE_PATH = Path("rules/powershell_download.json")
 MAX_RECORDS = 500
 SEPARATOR = 60
 
@@ -19,7 +18,7 @@ def print_alert(rule, process, timestamp, commandLine, matchedIndicator):
     print(f"Severity: {rule['severity']}")
     print("-" * SEPARATOR)
 
-def main ():
+def main():
     with open(RULE_PATH, "r", encoding = "utf-8") as f:
         rule_file = json.load(f)
         rules = rule_file["rules"]
@@ -29,8 +28,8 @@ def main ():
             rule["indicators"] = [indicator.lower() for indicator in rule["indicators"]]
 
         with Evtx(str(LOG_PATH)) as log:
-            for count, record in enumerate(log.records(), start = 1):
-                if count > MAX_RECORDS:
+            for count, record in enumerate(log.records(), count = 1):
+                if count > 500:
                     break
 
                 event_id, timestamp, data = get_event_data(record.xml())

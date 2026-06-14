@@ -1,4 +1,4 @@
-# Detection 001 - Suspicious Parent-Child Processes
+# Suspicious Parent-Child Processes
 
 ## Description
 

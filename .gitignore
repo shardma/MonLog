@@ -1,21 +1,4 @@
 #========================
-# Wazuh certs/secrets
-#========================
-*.pem
-*.key
-*.crt
-*.csr
-
-# Wazuh configs
-wazuh-docker/single-node/config/
-
-#========================
-# Docker
-#========================
-*.log
-docker-data/
-
-#========================
 # Python
 #========================
 __pycache__/
@@ -27,6 +10,15 @@ venv/
 # VSCode
 #========================
 .vscode/
+
+#========================
+# Sysmon logs and XML exports
+#========================
+sample-logs/*.evtx
+
+sample-logs/*.xml
+
+reports/*
 
 #========================
 # OS shenanigans
