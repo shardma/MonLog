@@ -22,6 +22,5 @@ sysmon logs, Python-based parsing, and MITRE ATT&CK mapping
 - Encoded Powershell execution
 - Powershell downloading remote content
 - Suspicious parent-child process relationships
-- New local user creation
-- Scheduled task persistence
-- Failed login spikes
+- Suspicious network connections
+- Suspicious registry persistence

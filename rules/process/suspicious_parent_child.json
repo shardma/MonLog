@@ -1,0 +1,27 @@
+{
+  "name": "suspicious parent child processes",
+  "event_id": "1",
+  "parents": ["chrome.exe", "winword.exe", "excel.exe", "outlook.exe"],
+  "rules": [
+    {
+      "child": "powershell.exe",
+      "mitre": "T1059.001",
+      "severity": "medium"
+    },
+    {
+      "child": "cmd.exe",
+      "mitre": "T1059.003",
+      "severity": "medium"
+    },
+    {
+      "child": "python.exe",
+      "mitre": "T1059.006",
+      "severity": "high"
+    },
+    {
+      "child": "wscript.exe",
+      "mitre": "T1059.007",
+      "severity": "high"
+    }
+  ]
+}

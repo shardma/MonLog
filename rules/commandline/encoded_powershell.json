@@ -1,0 +1,8 @@
+{
+    "name": "encoded powershell execution",
+    "event_id": "1", 
+    "processes": ["powershell.exe", "pwsh.exe"],
+    "indicators": ["-encodedcommand", "-enco", "-enc", "-ec"],
+    "mitre": "T1059.001",
+    "severity": "high"
+}
