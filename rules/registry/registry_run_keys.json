@@ -1,3 +1,10 @@
 {
-    "name": "Registry Run Keys Persistence"
+    "name": "registry run keys persistence",
+    "event_id": "13",
+    "paths": [
+        "\\software\\microsoft\\windows\\currentversion\\run",
+        "\\software\\microsoft\\windows\\currentversion\\runonce"
+    ],
+    "mitre": "T1547.001",
+    "severity": "high"
 }

@@ -26,7 +26,7 @@ def detect(events):
 
         data = event["data"]
         timestamp = event["timestamp"]
-
+        
         parent = Path(data.get("ParentImage", "")).name.lower()
         child = Path(data.get("Image", "")).name.lower()
         command_line = data.get("CommandLine", "")
