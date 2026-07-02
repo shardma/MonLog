@@ -1,0 +1,41 @@
+{
+    "name": "suspicious network connections",
+    "event_id": "3",
+    "processes":[
+        "powershell.exe",
+        "pwsh.exe",
+        "cmd.exe",
+        "wscript.exe",
+        "cscript.exe",
+        "mshta.exe",
+        "rundll32.exe",
+        "regsvr32.exe",
+        "certutil.exe",
+        "bitsadmin.exe",
+        "python.exe",
+        "pythonw.exe",
+        "node.exe",
+        "curl.exe",
+        "wget.exe",
+        "nc.exe",
+        "ncat.exe"
+    ],
+    "sensitive_ports":{
+        "ftp_data": ["20"],
+        "ftp_control": ["21"],
+        "ssh": ["22"],
+        "telnet": ["23"],
+        "common_c2": ["4444", "5555", "6666", "1337", "31337"],
+        "alternate_web": ["8080", "8443"],
+        "tor": ["9001", "9050"]
+    },
+    "allowed_processes_for_web": [
+        "chrome.exe",
+        "msedge.exe",
+        "firefox.exe",
+        "brave.exe",
+        "opera.exe"
+    ],
+    "mitre": "T1701",
+    "severity": "medium"
+}

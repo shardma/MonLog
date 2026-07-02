@@ -13,7 +13,7 @@ SEPARATOR = 60
 
 def main():
     print("Extracting events...")
-    events = extract_events(LOG_PATH, MAX_RECORDS, wanted_event_ids=["1", "13"])
+    events = extract_events(LOG_PATH, MAX_RECORDS, wanted_event_ids=["1", "3", "13"])
 
     print("Running command line detection...")
     alerts = detect_commandline.detect(events)
