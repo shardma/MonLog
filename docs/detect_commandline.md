@@ -5,13 +5,35 @@
 Detects Powershell commands that have obfusicated its contents
 via encoding and also if it has tried to download online content, encoded or not.
 
-Listed in Sysmon as event ID 1 (Process Creation)
+Listed in Sysmon as event ID 1: Process Creation
 
-From the extracted XML, the current script makes use of:
-- EventID
-- SystemTime
-- Image
-- CommandLine
+From the extracted XML, the current detection makes use of:
+| Field | Purpose |
+| :---|:---|
+|EventID|Confirms event ID 1|
+|SystemTime|Timestamp of execution|
+|Image|Confirms Powershell as the inciting process|
+|CommandLine|The full command line prompt that was flagged|
+
+## Detection Logic
+
+1. Parse Sysmon event ID 1
+2. Extract Image
+3. Check if Image is Powershell
+4. If matched:
+   1. Extract CommandLine and normalize into lowercase
+   2. Check if contents of CommandLine are suspicious
+   3. Extract the matched indicator if found
+   4. Generate and append the alert to the list
+
+
+## Potential False Positives
+
+- Legitimate downloads via Powershell initiated by the user
+- Legitimate file transfers
+- Software installers/updaters
+
+## Raw XML Data
 
 Example XML from [Ultimate Windows Security](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001):
 ```text

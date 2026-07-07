@@ -31,12 +31,11 @@ def detect(events):
                 continue
 
             process = Path(data.get("Image", "")).name.lower()
-            command_line = str(data.get("CommandLine", ""))
-            command_line_lower = command_line.lower()
-
             if process not in rule["processes"]:
                 continue
-
+            
+            command_line = str(data.get("CommandLine", ""))
+            command_line_lower = command_line.lower()
             for indicator in rule["indicators"]:
                 if indicator in command_line_lower:
                     alerts.append({

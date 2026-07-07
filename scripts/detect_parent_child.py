@@ -28,11 +28,11 @@ def detect(events):
         timestamp = event["timestamp"]
         
         parent = Path(data.get("ParentImage", "")).name.lower()
-        child = Path(data.get("Image", "")).name.lower()
-        command_line = data.get("CommandLine", "")
-
         if parent not in allowed_parents:
             continue
+
+        child = Path(data.get("Image", "")).name.lower()
+        command_line = data.get("CommandLine", "")
 
         for rule in rule_file["rules"]:
             if child == rule["child"]:

@@ -5,14 +5,35 @@
 Detects suspicious parent-child process relationships commonly associated with
 malware execution and phishing attacks.
 
-Listed in Sysmon as event ID 1 (Process Creation)
+Listed in Sysmon as event ID 1: Process Creation
 
-From the extracted XML, the current script makes use of:
-- EventID
-- SystemTime
-- ParentImage
-- Image
-- CommandLine
+From the extracted XML, the current detection makes use of:
+| Field | Purpose |
+| :---|:---|
+|EventID|Confirms event ID 1|
+|SystemTime|Timestamp of execution|
+|ParentImage|The parent process|
+|Image|The child process|
+|CommandLine|The full command line prompt that was flagged|
+
+## Detection Logic
+
+1. Parse Sysmon event ID 1
+2. Extract ParentImage and normalize into lowercase
+3. Check if ParentImage is in rule JSON
+4. If matched:
+   1. Extract Image
+   2. Extract CommandLine
+   3. If Image is in rule JSON 
+   4. Generate and append alert to list
+
+## Potential False Positives
+- Excel macros running Powershell for reporting/exporting automation
+- Excel/Word add-ins calling Python for data processing
+- Web browser launching an installer/update
+- Office documents opening a legitmate batch file
+
+## Raw XML Data
 
 Example XML from [Ultimate Windows Security](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001):
 ```text

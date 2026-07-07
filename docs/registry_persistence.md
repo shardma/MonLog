@@ -2,16 +2,41 @@
 
 ## Description
 
-Detects creation or editing of keys that run on startup in the Windows Registry.
+Detects creation or editing of keys that run on startup in the Windows Registry. These locations are commonly targeted in order to establish
+persistence after system reboots.
 
 Listed in Sysmon as event ID 13: RegistryEvent (Value Set)
 
 From the extracted XML, the current detection makes use of:
-- EventID
-- SystemTime
-- Image
-- Details
-- User
+| Field | Purpose |
+| :---|:---|
+|EventID|Confirms event ID 13|
+|SystemTime|Timestamp of modification|
+|Image|Executable making the registry change|
+|TargetObject|The path to the changed registry|
+|Details|Data written into the registry value|
+|User|Account resposible for the change|
+
+## Detection Logic
+
+1. Parse Sysmon event ID 13
+2. Extract TargetObject
+3. Compare TargetObject to known run paths
+4. If matched:
+   1. Extract time stamp
+   2. Extract process image
+   3. Extract registry change
+   4. Extract user
+   5. Generate and append alert to list
+
+## Potential False Positives
+- Windows updates
+- Legitimate software installers
+- Legitimate application updaters
+- IT Administration tools
+- Task manager startup changes
+
+## Raw XML Data
 
 Example XML from [Ultimate Windows Security](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90013)
 ```text
