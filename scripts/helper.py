@@ -2,37 +2,61 @@ from xml.etree import ElementTree as ET
 from Evtx.Evtx import Evtx
 
 # Takes in a raw Sysmon record, turns it into a tree, and extracts the useful info
+
 def get_event_data(event_xml):
     root = ET.fromstring(event_xml)
-    ns = {"e": "http://schemas.microsoft.com/win/2004/08/events/event"}
-    event_id = root.find(".//e:EventID", ns).text
-    timestamp = root.find(".//e:TimeCreated", ns).attrib.get("SystemTime")
+    ns = "http://schemas.microsoft.com/win/2004/08/events/event"
+    system = root.find(f"{{{ns}}}System")
 
-    # Create and fill a dictionary of Sysmon fields
+    if system is None:
+        raise ValueError("Missing System element")
+
+    event_id_element = system.find(f"{{{ns}}}EventID")
+    time_element = system.find(f"{{{ns}}}TimeCreated")
+
+    if event_id_element is None or event_id_element.text is None:
+        raise ValueError("Missing EventID")
+
+    event_id = event_id_element.text
+    timestamp = (
+        time_element.get("SystemTime")
+        if time_element is not None
+        else None
+    )
+
     data = {}
-    for item in root.findall(".//e:EventData/e:Data", ns):
-        data[item.attrib.get("Name")] = item.text or ""
+
+    event_data = root.find(f"{{{ns}}}EventData")
+
+    if event_data is not None:
+        for item in event_data.findall(f"{{{ns}}}Data"):
+            name = item.get("Name")
+            if name:
+                data[name] = item.text or ""
 
     return {
-        "event_id": event_id, 
-        "timestamp": timestamp, 
-        "data":data
+        "event_id": event_id,
+        "timestamp": timestamp,
+        "data": data
     }
 
-def extract_events(log_path, max_records = 500, wanted_event_ids = None):
-    events = []
-    if wanted_event_ids:
-        wanted_event_ids = set(str(e) for e in wanted_event_ids)
+def extract_events(log_path, max_records=500, wanted_event_ids=None):
+    if wanted_event_ids is not None:
+        wanted_event_ids = {
+            str(event_id) for event_id in wanted_event_ids
+        }
 
-    with(Evtx(str(log_path))) as log:
-        for count, record in enumerate(log.records(), start = 1):
-            if count > max_records:
+    with Evtx(str(log_path)) as log:
+        for count, record in enumerate(log.records(), start=1):
+            if max_records is not None and count > max_records:
                 break
 
             event = get_event_data(record.xml())
-            if wanted_event_ids and event["event_id"] not in wanted_event_ids:
+
+            if (
+                wanted_event_ids is not None
+                and event["event_id"] not in wanted_event_ids
+            ):
                 continue
-            events.append(event)
-            if count % 1000 == 0:
-                print(f"Parsed {count} records...")
-    return events
+
+            yield event
